@@ -1,0 +1,39 @@
+<!-- subscription.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Subscription - Demo Shop</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header>
+  <h1>Demo Shop</h1>
+  <nav>
+    <a href="index.html">Home</a> |
+    <a href="subscription.html">Subscription</a>
+  </nav>
+  <div id="cart-count">Cart: 0 items</div>
+</header>
+
+<main class="container">
+  <h2>Subscription</h2>
+  <div class="subscription-actions">
+    <button onclick="subscriptionAction('taken'); alert('Subscription taken (simulated)')">Take</button>
+    <button onclick="subscriptionAction('paused'); alert('Subscription paused (simulated)')">Pause</button>
+    <button onclick="subscriptionAction('resumed'); alert('Subscription resumed (simulated)')">Resume</button>
+    <button onclick="subscriptionAction('cancelled'); alert('Subscription cancelled (simulated)')">Cancel</button>
+  </div>
+</main>
+
+<footer>
+  <p>Demo site with <code>window.dataLayer</code> and <code>window.adobeDataLayer</code> pushes.</p>
+</footer>
+
+<script src="main.js"></script>
+<script>
+initPage('subscription');
+</script>
+</body>
+</html>

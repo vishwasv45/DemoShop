@@ -1,0 +1,50 @@
+<!-- checkout.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Checkout - Demo Shop</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header>
+  <h1>Demo Shop</h1>
+  <nav>
+    <a href="index.html">Home</a> |
+    <a href="cart.html">Cart</a> |
+    <a href="checkout.html">Checkout</a>
+  </nav>
+  <div id="cart-count">Cart: 0 items</div>
+</header>
+
+<main class="container">
+  <h2>Checkout</h2>
+  <div class="form">
+    <label for="cust-name">Full name</label>
+    <input id="cust-name" placeholder="Your name" />
+    <label for="cust-email">Email</label>
+    <input id="cust-email" placeholder="email@example.com" />
+    <label for="cust-address">Address</label>
+    <input id="cust-address" placeholder="Street, City, Country" />
+    <div class="actions">
+      <button onclick="goToPayment()">Continue to Payment</button>
+      <a class="link" href="cart.html">Back to Cart</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>Demo site with <code>window.dataLayer</code> and <code>window.adobeDataLayer</code> pushes.</p>
+</footer>
+
+<script src="main.js"></script>
+<script>
+initPage('checkout').then(function(){
+  // push checkout event with cart details (already done inside initPage -> pageview)
+  var cart = getCart();
+  pushEvent('checkout', enrichPayloadForEvent('Checkout', { step: 1, products: cart }));
+});
+</script>
+</body>
+</html>

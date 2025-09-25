@@ -1,0 +1,59 @@
+<!-- product.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Product - Demo Shop</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header>
+  <h1>Demo Shop</h1>
+  <nav>
+    <a href="index.html">Home</a> |
+    <a href="cart.html">Cart</a> |
+    <a href="checkout.html">Checkout</a> |
+    <a href="login.html">Login</a> |
+    <a href="register.html">Register</a>
+  </nav>
+  <div id="cart-count">Cart: 0 items</div>
+</header>
+
+<main class="container">
+  <h2 id="product-title">Product</h2>
+  <div id="product-detail"></div>
+</main>
+
+<footer>
+  <p>Demo site with <code>window.dataLayer</code> and <code>window.adobeDataLayer</code> pushes.</p>
+</footer>
+
+<script src="main.js"></script>
+<script>
+(function(){
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id') || 'p1';
+  initPage('product').then(function(){
+    var p = PRODUCTS.find(function(x){ return x.id===id; });
+    if(p){
+      document.getElementById('product-title').textContent = p.name;
+      var d = document.getElementById('product-detail');
+      d.innerHTML = '<div class="product-card">' +
+                      '<h3>'+escapeHtml(p.name)+'</h3>' +
+                      '<p class="muted">Category: '+escapeHtml(p.category)+'</p>' +
+                      '<p class="price">Price: $'+p.price.toFixed(2)+'</p>' +
+                      '<div class="product-actions">' +
+                        '<button onclick="addToCart(\''+p.id+'\',1)">Add to Cart</button>' +
+                        '<button onclick="goToCheckout()">Checkout</button>' +
+                      '</div>' +
+                    '</div>';
+      productView(p.id);
+    } else {
+      document.getElementById('product-detail').textContent = 'Product not found';
+    }
+  });
+})();
+</script>
+</body>
+</html>

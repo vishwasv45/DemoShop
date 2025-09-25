@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Product List</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="products.html">Products</a>
+        </nav>
+    </header>
+    <main>
+        <div id="product-list" class="grid">
+            <!-- Product items will be dynamically loaded here -->
+        </div>
+        <div style="margin-top:20px;text-align:center;">
+            <button onclick="window.location.href='cart.html'">Go to Cart</button>
+        </div>
+    </main>
+    <script src="main.js"></script>
+<script>
+// Render product list dynamically with live quantity
+initPage('products').then(function(){
+    var productsDiv = document.getElementById('product-list');
+    PRODUCTS.forEach(function(p){
+        var card = document.createElement('div');
+        card.className = 'card';
+        var cart = getCart();
+        var existing = cart.find(function(i){ return i.id === p.id; });
+        var qty = existing ? existing.qty : 0;
+        card.innerHTML = '<h3>'+escapeHtml(p.name)+'</h3>'+
+            '<p class="muted">'+escapeHtml(p.category)+'</p>'+
+            '<p class="price">$'+p.price.toFixed(2)+'</p>'+
+            '<div class="card-actions">'+
+                '<a class="link" href="product-details.html?id='+p.id+'">View Details</a>'+
+                '<button id="add-'+p.id+'">Add to Cart</button>'+
+                '<span id="qty-'+p.id+'" style="margin-left:10px;">Qty: '+qty+'</span>'+
+            '</div>';
+        productsDiv.appendChild(card);
+        document.getElementById('add-'+p.id).onclick = function(){
+            addToCart(p.id,1);
+            var cart = getCart();
+            var existing = cart.find(function(i){ return i.id === p.id; });
+            var qty = existing ? existing.qty : 0;
+            document.getElementById('qty-'+p.id).textContent = 'Qty: '+qty;
+        };
+    });
+});
+</script>
+</body>
+</html>

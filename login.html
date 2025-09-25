@@ -1,0 +1,42 @@
+<!-- login.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login - Demo Shop</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header>
+  <h1>Demo Shop</h1>
+  <nav>
+    <a href="index.html">Home</a> |
+    <a href="login.html">Login</a> |
+    <a href="register.html">Register</a>
+  </nav>
+  <div id="cart-count">Cart: 0 items</div>
+</header>
+
+<main class="container">
+  <h2>Login</h2>
+  <div class="form">
+    <input id="login-email" placeholder="Email" />
+    <input id="login-pass" type="password" placeholder="Password" />
+    <div class="actions">
+      <button onclick="(function(){loginUser(document.getElementById('login-email').value); alert('Logged in (simulated)');})()">Login</button>
+      <a class="link" href="register.html">Register</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>Demo site with <code>window.dataLayer</code> and <code>window.adobeDataLayer</code> pushes.</p>
+</footer>
+
+<script src="main.js"></script>
+<script>
+initPage('login');
+</script>
+</body>
+</html>

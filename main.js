@@ -43,8 +43,8 @@
 
   function pushEventInternal(name, payload) {
     var eventObj = Object.assign({ event: name }, payload || {});
-    window.dataLayer.push(eventObj);
-    window.adobeDataLayer.push(Object.assign( { event: name }, payload || {}));
+  window.dataLayer.push(eventObj);
+  window.adobeDataLayer.push(eventObj);
     console.log('DL PUSH ->', name, eventObj);
   }
 

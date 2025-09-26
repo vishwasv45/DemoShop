@@ -147,9 +147,24 @@
     window.location.href = 'confirmation.html';
   };
 
+  // Static login emails and customer ID mapping
+  window.LOGIN_USERS = [
+    { email: 'alice@example.com', customerId: 'CUST001' },
+    { email: 'bob@example.com', customerId: 'CUST002' },
+    { email: 'carol@example.com', customerId: 'CUST003' },
+    { email: 'dave@example.com', customerId: 'CUST004' },
+    { email: 'eve@example.com', customerId: 'CUST005' }
+  ];
+
   window.loginUser = function(email) {
-    var payload = enrichPayloadForEvent('Login', { email: email });
+    var user = LOGIN_USERS.find(function(u){ return u.email === email; });
+    if (!user) {
+      alert('Invalid email. Use one of: ' + LOGIN_USERS.map(function(u){return u.email;}).join(', '));
+      return;
+    }
+    var payload = enrichPayloadForEvent('Login', { email: user.email, customerId: user.customerId });
     pushEventInternal('login', payload);
+    alert('Logged in as ' + user.email + ' (Customer ID: ' + user.customerId + ')');
   };
 
   window.registerUser = function(name, email) {

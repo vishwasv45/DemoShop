@@ -24,8 +24,16 @@
     <input id="login-email" placeholder="Email" />
     <input id="login-pass" type="password" placeholder="Password" />
     <div class="actions">
-      <button onclick="(function(){loginUser(document.getElementById('login-email').value); alert('Logged in (simulated)');})()">Login</button>
+      <button onclick="loginUser(document.getElementById('login-email').value)">Login</button>
       <a class="link" href="register.html">Register</a>
+    </div>
+    <div style="margin-top:10px;font-size:0.95em;color:#555;">
+      <strong>Demo Emails:</strong><br>
+      alice@example.com<br>
+      bob@example.com<br>
+      carol@example.com<br>
+      dave@example.com<br>
+      eve@example.com
     </div>
   </div>
 </main>

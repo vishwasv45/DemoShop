@@ -38,8 +38,8 @@ initPage('products').then(function(){
             '<p class="muted">'+escapeHtml(p.category)+'</p>'+
             '<p class="price">$'+p.price.toFixed(2)+'</p>'+
             '<div class="card-actions">'+
-                '<a class="link" href="product-details.html?id='+p.id+'">View Details</a>'+
                 '<button id="add-'+p.id+'">Add to Cart</button>'+
+                '<a class="link" href="product.html?id='+p.id+'">Open Page</a>'+
                 '<span id="qty-'+p.id+'" style="margin-left:10px;">Qty: '+qty+'</span>'+
             '</div>';
         productsDiv.appendChild(card);

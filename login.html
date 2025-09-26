@@ -23,10 +23,7 @@
   <div class="form">
     <input id="login-email" placeholder="Email" />
     <input id="login-pass" type="password" placeholder="Password" />
-    <div class="actions">
-      <button onclick="loginUser(document.getElementById('login-email').value)">Login</button>
-      <a class="link" href="register.html">Register</a>
-    </div>
+    <div class="actions" id="login-actions"></div>
     <div style="margin-top:10px;font-size:0.95em;color:#555;">
       <strong>Demo Emails:</strong><br>
       alice@example.com<br>
@@ -45,6 +42,18 @@
 <script src="main.js"></script>
 <script>
 initPage('login');
+// Show login or logout button based on login state
+window.addEventListener('DOMContentLoaded', function(){
+  var actionsDiv = document.getElementById('login-actions');
+  var customerId = window.getCustomerId && window.getCustomerId();
+  if (customerId) {
+    actionsDiv.innerHTML = '<button onclick="logoutUser()">Logout</button>' +
+      '<span style="margin-left:10px;color:#007700;">Logged in as: ' + customerId + '</span>';
+  } else {
+    actionsDiv.innerHTML = '<button onclick="loginUser(document.getElementById(\'login-email\').value)">Login</button>' +
+      '<a class="link" href="register.html" style="margin-left:10px;">Register</a>';
+  }
+});
 </script>
 </body>
 </html>

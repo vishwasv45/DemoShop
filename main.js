@@ -87,11 +87,50 @@
 
   window.findProduct = function(id) { return PRODUCTS.find(function(p){ return p.id === id; }); };
 
+  window.getCustomerId = function() {
+    return localStorage.getItem('customerId') || null;
+  };
+
   window.initPage = async function(pageName) {
     await loadSpec();
     updateCartCount();
-    // pageview push enriched with page name
-    var payload = enrichPayloadForEvent('Pageview(Global)', { page: pageName });
+    // pageview push enriched with page name, customerId, email, and dynamic page object
+    var customerId = window.getCustomerId();
+    var email = null;
+    if (customerId) {
+      var user = window.LOGIN_USERS.find(function(u){ return u.customerId === customerId; });
+      if (user) email = user.email;
+    }
+    var defaultPageInfo = {
+      category: "NA",
+      templateType: "CMS_PAGE",
+      templateName: pageName + " page",
+      type: "CMS_PAGE",
+      update: new Date().toLocaleDateString(),
+      url: window.location.href,
+      tags: "NA",
+      country: "India",
+      language: navigator.language || "en_US",
+      domain: window.location.hostname,
+      path: window.location.pathname,
+      loadTime: (window.performance && window.performance.timing) ? ((window.performance.timing.loadEventEnd-window.performance.timing.navigationStart)/1000).toFixed(2) : "NA",
+      scroll_percent: (window.scrollY / (document.body.scrollHeight-window.innerHeight) * 100 || 0).toFixed(2),
+      previousPageName: document.referrer || "",
+      name: pageName.toUpperCase(),
+      internalCampaign: "NA",
+      timestamp: Math.floor(Date.now()/1000).toString()
+    };
+    var pageInfo = arguments[1] ? Object.assign({}, defaultPageInfo, arguments[1]) : defaultPageInfo;
+    var userObj = {
+      email: email || undefined,
+      customerId: customerId || undefined,
+      loginStatus: !!customerId
+    };
+    var payload = enrichPayloadForEvent('Pageview(Global)', {
+      page: pageName,
+      user: userObj,
+      pageObject: pageInfo
+    });
     pushEventInternal('pageview', payload);
     return Promise.resolve();
   };
@@ -162,9 +201,17 @@
       alert('Invalid email. Use one of: ' + LOGIN_USERS.map(function(u){return u.email;}).join(', '));
       return;
     }
+    localStorage.setItem('customerId', user.customerId);
     var payload = enrichPayloadForEvent('Login', { email: user.email, customerId: user.customerId });
     pushEventInternal('login', payload);
     alert('Logged in as ' + user.email + ' (Customer ID: ' + user.customerId + ')');
+    window.location.reload();
+  };
+
+  window.logoutUser = function() {
+    localStorage.removeItem('customerId');
+    alert('Logged out');
+    window.location.reload();
   };
 
   window.registerUser = function(name, email) {

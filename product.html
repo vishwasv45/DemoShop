@@ -1,0 +1,149 @@
+<!-- product.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Product - V Store</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://assets.adobedtm.com/01296dd00565/a7688a1e27f2/launch-4ef5df62b439-development.min.js" async></script>
+</head>
+<body>
+<header>
+  <img src="https://img.freepik.com/premium-photo/vibrant-red-neon-letter-v-sleek-black-background-perfect-graphic-design-projects-advertising-campaigns_153912-292454.jpg" alt="V Store Logo" style="height:48px;width:48px;vertical-align:middle;margin-right:10px;border-radius:8px;object-fit:cover;">
+  <h1 style="display:inline;vertical-align:middle;">V Store</h1>
+  <div id="nav-container"></div>
+  <div id="cart-count">Cart: 0 items</div>
+</header>
+
+<main class="container">
+  <div class="hero">
+    <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1200&q=80" alt="Product Banner" class="hero-img">
+    <div class="hero-text">
+      <h1 id="product-title">Product</h1>
+      <p>View product details and add to cart.</p>
+    </div>
+  </div>
+  <div id="product-detail"></div>
+</main>
+
+<footer>
+  <p>V Store demo site with <code>window.dataLayer</code> and <code>window.adobeDataLayer</code> pushes.</p>
+</footer>
+
+<script src="main.js"></script>
+<script>
+// Inject shared navigation
+fetch('nav.html').then(r=>r.text()).then(html=>{
+  document.getElementById('nav-container').innerHTML = html;
+  updateNavLoginState();
+});
+function updateNavLoginState() {
+  var customerId = window.getCustomerId && window.getCustomerId();
+  var navLogin = document.getElementById('nav-login-link');
+  var navRegister = document.getElementById('nav-register-link');
+  var navUserInfo = document.getElementById('nav-user-info');
+  if (customerId) {
+    navLogin.textContent = 'Logout';
+    navLogin.href = '#';
+    navLogin.onclick = function(e){ e.preventDefault(); logoutUser(); };
+    navRegister.style.display = 'none';
+    navUserInfo.textContent = 'Logged in as: ' + customerId;
+  } else {
+    navLogin.textContent = 'Login';
+    navLogin.href = 'login.html';
+    navLogin.onclick = null;
+    navRegister.style.display = '';
+    navUserInfo.textContent = '';
+  }
+}
+(function(){
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id') || 'p1';
+  initPage('product').then(function(){
+    var p = PRODUCTS.find(function(x){ return x.id===id; });
+    if(p){
+      document.getElementById('product-title').textContent = p.name;
+      var d = document.getElementById('product-detail');
+      d.innerHTML = `
+        <div class="product-card product-detail-flex">
+          <div class="product-detail-img-wrap">
+            <img class="product-detail-img" src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}">
+          </div>
+          <div class="product-detail-content">
+            <h3>${escapeHtml(p.name)}</h3>
+            <p class="muted">Category: ${escapeHtml(p.category)}</p>
+            <p class="price">Price: $${p.price.toFixed(2)}</p>
+            <div class="product-actions">
+              <button onclick="addToCart('${p.id}',1)">Add to Cart</button>
+              <button onclick="goToCheckout()">Checkout</button>
+            </div>
+          </div>
+        </div>
+      `;
+      // Fire product view event for datalayer
+      if (window.pushEvent) {
+        window.pushEvent('productView', window.enrichPayloadForEvent('Product View', { product: p }));
+      }
+    
+    // ...existing code...
+    }
+    else {
+      document.getElementById('product-detail').textContent = 'Product not found';
+    }
+  });
+})();
+</script>
+<style>
+.product-detail-flex {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,.04);
+  padding: 24px 18px;
+  margin-top: 24px;
+}
+.product-detail-img-wrap {
+  flex: 0 0 320px;
+  max-width: 320px;
+  width: 100%;
+  background: #f4f4f4;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.product-detail-img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+.product-detail-content {
+  flex: 1 1 0%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+@media (max-width: 700px) {
+  .product-detail-flex {
+    flex-direction: column;
+    gap: 18px;
+    padding: 12px 6px;
+  }
+  .product-detail-img-wrap {
+    max-width: 100%;
+  }
+}
+</style>
+    } else {
+      document.getElementById('product-detail').textContent = 'Product not found';
+    }
+  });
+})();
+</script>
+</body>
+</html>

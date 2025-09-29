@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://assets.adobedtm.com/01296dd00565/a7688a1e27f2/launch-4ef5df62b439-development.min.js" async></script>
+</head>
+<body>
+    <header>
+        <h1>Product List</h1>
+        <div id="nav-container"></div>
+    </header>
+    <main>
+        <div id="product-list" class="grid">
+            <!-- Product items will be dynamically loaded here -->
+        </div>
+        <div style="margin-top:20px;text-align:center;">
+            <button onclick="window.location.href='cart.html'">Go to Cart</button>
+        </div>
+    </main>
+    <script src="main.js"></script>
+<script>
+// Inject shared navigation
+fetch('nav.html').then(r=>r.text()).then(html=>{
+    document.getElementById('nav-container').innerHTML = html;
+    updateNavLoginState();
+});
+function updateNavLoginState() {
+    var customerId = window.getCustomerId && window.getCustomerId();
+    var navLogin = document.getElementById('nav-login-link');
+    var navRegister = document.getElementById('nav-register-link');
+    var navUserInfo = document.getElementById('nav-user-info');
+    if (customerId) {
+        navLogin.textContent = 'Logout';
+        navLogin.href = '#';
+        navLogin.onclick = function(e){ e.preventDefault(); logoutUser(); };
+        navRegister.style.display = 'none';
+        navUserInfo.textContent = 'Logged in as: ' + customerId;
+    } else {
+        navLogin.textContent = 'Login';
+        navLogin.href = 'login.html';
+        navLogin.onclick = null;
+        navRegister.style.display = '';
+        navUserInfo.textContent = '';
+    }
+}
+// Render product list dynamically with live quantity
+initPage('products').then(function(){
+    var productsDiv = document.getElementById('product-list');
+    PRODUCTS.forEach(function(p){
+        var card = document.createElement('div');
+        card.className = 'card';
+        var cart = getCart();
+        var existing = cart.find(function(i){ return i.id === p.id; });
+        var qty = existing ? existing.qty : 0;
+        card.innerHTML =
+            '<div class="card-img-wrap"><img class="card-img" src="'+escapeHtml(p.image)+'" alt="'+escapeHtml(p.name)+'"></div>'+
+            '<h3>'+escapeHtml(p.name)+'</h3>'+
+            '<p class="muted">'+escapeHtml(p.category)+'</p>'+
+            '<p class="price">$'+p.price.toFixed(2)+'</p>'+
+            '<div class="card-actions">'+
+                '<button id="add-'+p.id+'">Add to Cart</button>'+
+                '<button id="quick-'+p.id+'">Quick View</button>'+
+                '<span id="qty-'+p.id+'" style="margin-left:10px;">Qty: '+qty+'</span>'+
+            '</div>';
+        productsDiv.appendChild(card);
+        document.getElementById('add-'+p.id).onclick = function(){
+            addToCart(p.id,1);
+            var cart = getCart();
+            var existing = cart.find(function(i){ return i.id === p.id; });
+            var qty = existing ? existing.qty : 0;
+            document.getElementById('qty-'+p.id).textContent = 'Qty: '+qty;
+        };
+        document.getElementById('quick-'+p.id).onclick = function(){
+            productView(p.id);
+        };
+    });
+});
+</script>
+</body>
+</html>

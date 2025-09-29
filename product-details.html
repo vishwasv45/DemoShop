@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://assets.adobedtm.com/01296dd00565/a7688a1e27f2/launch-4ef5df62b439-development.min.js" async></script>
+</head>
+<body>
+    <header>
+        <h1>Product Details</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="products.html">Products</a>
+        </nav>
+    </header>
+    <main>
+        <div id="product-details">
+            <!-- Product details will be dynamically loaded here -->
+        </div>
+        <div style="margin-top:20px;text-align:center;">
+            <button onclick="window.location.href='cart.html'">Go to Cart</button>
+        </div>
+    </main>
+    <script src="main.js"></script>
+<script>
+// Render product details dynamically with live quantity
+function getQueryParam(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+
+initPage('product-details').then(function(){
+    var detailsDiv = document.getElementById('product-details');
+    var productId = getQueryParam('id');
+    var p = findProduct(productId);
+    if (!p) {
+        detailsDiv.innerHTML = '<p>Product not found.</p>';
+        return;
+    }
+    var cart = getCart();
+    var existing = cart.find(function(i){ return i.id === p.id; });
+    var qty = existing ? existing.qty : 0;
+    detailsDiv.innerHTML = '<h2>'+escapeHtml(p.name)+'</h2>'+
+        '<p class="muted">Category: '+escapeHtml(p.category)+'</p>'+
+        '<p>SKU: '+escapeHtml(p.sku)+'</p>'+
+        '<p class="price">Price: $'+p.price.toFixed(2)+'</p>'+
+        '<button id="add-'+p.id+'">Add to Cart</button>'+
+        '<span id="qty-'+p.id+'" style="margin-left:10px;">Qty: '+qty+'</span>';
+    document.getElementById('add-'+p.id).onclick = function(){
+        addToCart(p.id,1);
+        var cart = getCart();
+        var existing = cart.find(function(i){ return i.id === p.id; });
+        var qty = existing ? existing.qty : 0;
+        document.getElementById('qty-'+p.id).textContent = 'Qty: '+qty;
+    };
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!-- confirmation.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Confirmation - V Store</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://assets.adobedtm.com/01296dd00565/a7688a1e27f2/launch-4ef5df62b439-development.min.js" async></script>
+</head>
+<body>
+<header>
+  <img src="https://img.freepik.com/premium-photo/vibrant-red-neon-letter-v-sleek-black-background-perfect-graphic-design-projects-advertising-campaigns_153912-292454.jpg" alt="V Store Logo" style="height:48px;width:48px;vertical-align:middle;margin-right:10px;border-radius:8px;object-fit:cover;">
+  <h1 style="display:inline;vertical-align:middle;">V Store</h1>
+  <div id="nav-container"></div>
+  <div id="cart-count">Cart: 0 items</div>
+</header>
+
+<main class="container">
+  <h2>Order Confirmation</h2>
+  <div id="order-info" class="order-info"></div>
+  <div class="actions"><a class="link" href="index.html">Back to Home</a></div>
+</main>
+
+<footer>
+  <p>V Store demo site with <code>window.dataLayer</code> and <code>window.adobeDataLayer</code> pushes.</p>
+</footer>
+
+<script src="main.js"></script>
+<script>
+// Inject shared navigation
+fetch('nav.html').then(r=>r.text()).then(html=>{
+  document.getElementById('nav-container').innerHTML = html;
+  updateNavLoginState();
+});
+function updateNavLoginState() {
+  var customerId = window.getCustomerId && window.getCustomerId();
+  var navLogin = document.getElementById('nav-login-link');
+  var navRegister = document.getElementById('nav-register-link');
+  var navUserInfo = document.getElementById('nav-user-info');
+  if (customerId) {
+    navLogin.textContent = 'Logout';
+    navLogin.href = '#';
+    navLogin.onclick = function(e){ e.preventDefault(); logoutUser(); };
+    navRegister.style.display = 'none';
+    navUserInfo.textContent = 'Logged in as: ' + customerId;
+  } else {
+    navLogin.textContent = 'Login';
+    navLogin.href = 'login.html';
+    navLogin.onclick = null;
+    navRegister.style.display = '';
+    navUserInfo.textContent = '';
+  }
+}
+initPage('confirmation').then(function(){
+  var ord = JSON.parse(localStorage.getItem('lastOrder')||'null');
+  if(ord){
+    var el = document.getElementById('order-info');
+    el.innerHTML = '<div class="order-summary"><div><strong>Order ID:</strong> '+escapeHtml(ord.id)+'</div>' +
+                   '<div><strong>Total:</strong> $'+ord.total.toFixed(2)+'</div>' +
+                   '<pre class="code">'+escapeHtml(JSON.stringify(ord.items, null, 2))+'</pre></div>';
+    // purchase event already fired in placeOrder; but include pageview/purchase-confirmation pair
+    pushEvent('purchaseConfirmation', enrichPayloadForEvent('Purchase', { order: ord }));
+  } else {
+    document.getElementById('order-info').textContent = 'No order found';
+  }
+});
+</script>
+</body>
+</html>

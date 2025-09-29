@@ -1,0 +1,142 @@
+<!-- index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Home - V Store</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://assets.adobedtm.com/01296dd00565/a7688a1e27f2/launch-4ef5df62b439-development.min.js" async></script>
+  <script src="main.js"></script>
+<body>
+<header>
+  <img src="https://pics.craiyon.com/2023-10-10/59b886e58ddc4787bcff51091752b9b6.webp" alt="V Store Logo" style="height:80px;width:60px;vertical-align:middle;margin-right:10px;border-radius:8px;object-fit:cover; margin-bottom: 10px;">
+  <div id="nav-container"></div>
+  <div id="cart-count">Cart: 0 items</div>
+</header>
+
+<main class="container">
+
+  <div class="hero">
+    <div class="carousel-banner">
+      <div class="carousel-track">
+        <img src="https://t3.ftcdn.net/jpg/01/17/33/22/360_F_117332203_ekwDZkViF6M3itApEFRIH4844XjJ7zEb.jpg" alt="Banner 1" class="carousel-img">
+        <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1200&q=80" alt="Banner 2" class="carousel-img">
+        <img src="https://img.freepik.com/premium-photo/red-number-1-is-black-background_337384-110793.jpg" alt="Banner 3" class="carousel-img">
+        <img src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=1200&q=80" alt="Banner 4" class="carousel-img">
+      </div>
+      <div class="carousel-indicators">
+        <span class="carousel-dot active"></span>
+        <span class="carousel-dot"></span>
+        <span class="carousel-dot"></span>
+        <span class="carousel-dot"></span>
+      </div>
+    </div>
+    <div class="hero-text">
+      <h1>Welcome to V Store</h1>
+      <p>Discover the best in apparel, footwear, and accessories!</p>
+    </div>
+  </div>
+
+  <h2 style="margin-top:2rem;">Home - Products</h2>
+  <div class="controls">
+    <input id="search-input" placeholder="Search..." oninput="search(this.value)" />
+    <div class="cats">
+      <button onclick="viewCategory('Apparel')">Apparel</button>
+      <button onclick="viewCategory('Footwear')">Footwear</button>
+      <button onclick="viewCategory('Accessories')">Accessories</button>
+    </div>
+  </div>
+  <div id="products" class="grid"></div>
+</main>
+
+<footer>
+  <p>V Store demo site with <code>window.dataLayer</code> and <code>window.adobeDataLayer</code> pushes.</p>
+</footer>
+
+
+<script>
+// Inject shared navigation
+fetch('nav.html').then(r=>r.text()).then(html=>{
+  document.getElementById('nav-container').innerHTML = html;
+  updateNavLoginState();
+});
+function updateNavLoginState() {
+  var customerId = window.getCustomerId && window.getCustomerId();
+  var navLogin = document.getElementById('nav-login-link');
+  var navRegister = document.getElementById('nav-register-link');
+  var navUserInfo = document.getElementById('nav-user-info');
+  if (customerId) {
+    navLogin.textContent = 'Logout';
+    navLogin.href = '#';
+    navLogin.onclick = function(e){ e.preventDefault(); logoutUser(); };
+    navRegister.style.display = 'none';
+    navUserInfo.textContent = 'Logged in as: ' + customerId;
+  } else {
+    navLogin.textContent = 'Login';
+    navLogin.href = 'login.html';
+    navLogin.onclick = null;
+    navRegister.style.display = '';
+    navUserInfo.textContent = '';
+  }
+}
+initPage('home').then(function(){
+  var productsDiv = document.getElementById('products');
+  PRODUCTS.forEach(function(p){
+    var card = document.createElement('div');
+    card.className = 'card';
+    var cart = getCart();
+    var existing = cart.find(function(i){ return i.id === p.id; });
+    var qty = existing ? existing.qty : 0;
+    card.innerHTML =
+      '<div class="card-img-wrap"><img class="card-img" src="'+escapeHtml(p.image)+'" alt="'+escapeHtml(p.name)+'"></div>'+
+      '<h3>'+escapeHtml(p.name)+'</h3>'+
+      '<p class="muted">'+escapeHtml(p.category)+'</p>'+
+      '<p class="price">$'+p.price.toFixed(2)+'</p>'+
+      '<div class="card-actions">' +
+        '<button id="add-'+p.id+'">Add to Cart</button>' +
+        '<button id="quick-'+p.id+'">Quick View</button>' +
+        '<span id="qty-'+p.id+'" style="margin-left:10px;">Qty: '+qty+'</span>'+
+      '</div>';
+    productsDiv.appendChild(card);
+    document.getElementById('add-'+p.id).onclick = function(){
+      addToCart(p.id,1);
+      var cart = getCart();
+      var existing = cart.find(function(i){ return i.id === p.id; });
+      var qty = existing ? existing.qty : 0;
+      document.getElementById('qty-'+p.id).textContent = 'Qty: '+qty;
+    };
+    document.getElementById('quick-'+p.id).onclick = function(){
+      productView(p.id);
+    };
+  });
+});
+</script>
+<script>
+// Carousel Banner Logic
+const carouselTrack = document.querySelector('.carousel-track');
+const carouselImgs = document.querySelectorAll('.carousel-img');
+const dots = document.querySelectorAll('.carousel-dot');
+let currentSlide = 0;
+const totalSlides = carouselImgs.length;
+function showSlide(idx) {
+  carouselTrack.style.transform = `translateX(-${idx * 100}vw)`;
+  dots.forEach((dot, i) => dot.classList.toggle('active', i === idx));
+}
+function nextSlide() {
+  currentSlide = (currentSlide + 1) % totalSlides;
+  showSlide(currentSlide);
+}
+let carouselInterval = setInterval(nextSlide, 4000);
+dots.forEach((dot, i) => {
+  dot.addEventListener('click', () => {
+    currentSlide = i;
+    showSlide(currentSlide);
+    clearInterval(carouselInterval);
+    carouselInterval = setInterval(nextSlide, 4000);
+  });
+});
+showSlide(0);
+</script>
+</body>
+</html>

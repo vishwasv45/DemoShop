@@ -1,0 +1,144 @@
+<!-- checkout.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Checkout - V Store</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://assets.adobedtm.com/01296dd00565/a7688a1e27f2/launch-4ef5df62b439-development.min.js" async></script>
+</head>
+<body>
+<header>
+  <img src="https://img.freepik.com/premium-photo/vibrant-red-neon-letter-v-sleek-black-background-perfect-graphic-design-projects-advertising-campaigns_153912-292454.jpg" alt="V Store Logo" style="height:48px;width:48px;vertical-align:middle;margin-right:10px;border-radius:8px;object-fit:cover;">
+  <h1 style="display:inline;vertical-align:middle;">V Store</h1>
+  <div id="nav-container"></div>
+  <div id="cart-count">Cart: 0 items</div>
+</header>
+
+<main class="container">
+  <div class="hero">
+    <img src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=1200&q=80" alt="Checkout Banner" class="hero-img">
+    <div class="hero-text">
+      <h1>Checkout</h1>
+      <p>Enter your details to complete your purchase.</p>
+    </div>
+  </div>
+  <h2 style="margin-top:2rem;">Checkout</h2>
+  <div id="checkout-products"></div>
+  <div class="form">
+    <label for="cust-name">Full name</label>
+    <input id="cust-name" placeholder="Your name" />
+    <label for="cust-email">Email</label>
+    <input id="cust-email" placeholder="email@example.com" />
+    <label for="cust-address">Address</label>
+    <input id="cust-address" placeholder="Street, City, Country" />
+    <div class="actions">
+      <button onclick="goToPayment()">Continue to Payment</button>
+      <a class="link" href="cart.html">Back to Cart</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>V Store demo site with <code>window.dataLayer</code> and <code>window.adobeDataLayer</code> pushes.</p>
+</footer>
+
+<script src="main.js"></script>
+<script>
+// Inject shared navigation
+fetch('nav.html').then(r=>r.text()).then(html=>{
+  document.getElementById('nav-container').innerHTML = html;
+  updateNavLoginState();
+});
+function updateNavLoginState() {
+  var customerId = window.getCustomerId && window.getCustomerId();
+  var navLogin = document.getElementById('nav-login-link');
+  var navRegister = document.getElementById('nav-register-link');
+  var navUserInfo = document.getElementById('nav-user-info');
+  if (customerId) {
+    navLogin.textContent = 'Logout';
+    navLogin.href = '#';
+    navLogin.onclick = function(e){ e.preventDefault(); logoutUser(); };
+    navRegister.style.display = 'none';
+    navUserInfo.textContent = 'Logged in as: ' + customerId;
+  } else {
+    navLogin.textContent = 'Login';
+    navLogin.href = 'login.html';
+    navLogin.onclick = null;
+    navRegister.style.display = '';
+    navUserInfo.textContent = '';
+  }
+}
+initPage('checkout').then(function(){
+  // push checkout event with cart details (already done inside initPage -> pageview)
+  var cart = getCart();
+  pushEvent('checkout', enrichPayloadForEvent('Checkout', { step: 1, products: cart }));
+  // Render products in checkout summary
+  var productsDiv = document.getElementById('checkout-products');
+  if (productsDiv && cart.length > 0) {
+    cart.forEach(function(i){
+      var el = document.createElement('div');
+      el.className = 'cart-item cart-item-flex';
+      el.innerHTML =
+        '<div class="cart-item-img-wrap">'
+          + '<img class="cart-item-img" src="'+escapeHtml(i.image)+'" alt="'+escapeHtml(i.name)+'">'
+        + '</div>'
+        + '<div class="cart-item-content">'
+          + '<div class="ci-name">'+escapeHtml(i.name)+'</div>'
+          + '<div class="ci-qty">Qty: '+i.qty+'</div>'
+          + '<div class="ci-price">$'+(i.price*i.qty).toFixed(2)+'</div>'
+        + '</div>';
+      productsDiv.appendChild(el);
+    });
+  }
+});
+</script>
+<style>
+.cart-item-flex {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,.04);
+  padding: 16px 12px;
+  margin-bottom: 12px;
+}
+.cart-item-img-wrap {
+  flex: 0 0 100px;
+  max-width: 100px;
+  width: 100%;
+  background: #f4f4f4;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cart-item-img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+.cart-item-content {
+  flex: 1 1 0%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+@media (max-width: 600px) {
+  .cart-item-flex {
+    flex-direction: column;
+    gap: 12px;
+    padding: 10px 4px;
+  }
+  .cart-item-img-wrap {
+    max-width: 100%;
+  }
+}
+</style>
+</script>
+</body>
+</html>

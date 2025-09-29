@@ -1,0 +1,22 @@
+
+{
+  "Pageview(Global) ": { "rows": [] },
+  "Form": { "rows": [] },
+  " Login Success": { "rows": [] },
+  "Newsletter": { "rows": [] },
+  "Register": { "rows": [] },
+  "Search": { "rows": [] },
+  "Add to Cart": { "rows": [] },
+  "Cart View": { "rows": [] },
+  "Checkout": { "rows": [] },
+  "Checkout Address": { "rows": [] },
+  "E-commerce Error": { "rows": [] },
+  "Product View": { "rows": [] },
+  "Purchase": { "rows": [] },
+  "Remove from Cart": { "rows": [] },
+  "Device Registration": { "rows": [] },
+  "Subscription Cancel": { "rows": [] },
+  "Subscription Pause": { "rows": [] },
+  "Subscription Re-order": { "rows": [] },
+  "Subscription Resume": { "rows": [] }
+}

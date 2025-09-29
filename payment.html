@@ -1,0 +1,51 @@
+<!-- payment.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Payment - V Store</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://assets.adobedtm.com/01296dd00565/a7688a1e27f2/launch-4ef5df62b439-development.min.js" async></script>
+</head>
+<body>
+<header>
+  <img src="https://img.freepik.com/premium-photo/vibrant-red-neon-letter-v-sleek-black-background-perfect-graphic-design-projects-advertising-campaigns_153912-292454.jpg" alt="V Store Logo" style="height:48px;width:48px;vertical-align:middle;margin-right:10px;border-radius:8px;object-fit:cover;">
+  <h1 style="display:inline;vertical-align:middle;">V Store</h1>
+  <nav>
+    <a href="index.html">Home</a> |
+    <a href="cart.html">Cart</a> |
+    <a href="checkout.html">Checkout</a>
+  </nav>
+  <div id="cart-count">Cart: 0 items</div>
+</header>
+
+<main class="container">
+  <h2>Payment</h2>
+  <div class="form">
+    <label>Card number (simulated)</label>
+    <input id="card" placeholder="4111 1111 1111 1111" />
+    <label>Expiry</label>
+    <input id="exp" placeholder="MM/YY" />
+    <label>CVV</label>
+    <input id="cvv" placeholder="123" />
+    <div class="actions">
+      <button onclick="placeOrder()">Pay & Place Order</button>
+      <a class="link" href="checkout.html">Back</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>V Store demo site with <code>window.dataLayer</code> and <code>window.adobeDataLayer</code> pushes.</p>
+</footer>
+
+<script src="main.js"></script>
+<script>
+initPage('payment').then(function(){
+  var cart = getCart();
+  pushEvent('payment', enrichPayloadForEvent('Checkout', { step: 2, products: cart }));
+});
+</script>
+</body>
+</html>

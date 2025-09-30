@@ -9,10 +9,24 @@
   <script src="https://assets.adobedtm.com/e78d80a30a77/9e3ca76f359f/launch-7fe6a069d040-development.min.js" async></script>
   <script src="main.js"></script>
 <body>
-<header>
-  <img src="https://pics.craiyon.com/2023-10-10/59b886e58ddc4787bcff51091752b9b6.webp" alt="V Store Logo" style="height:80px;width:60px;vertical-align:middle;margin-right:10px;border-radius:8px;object-fit:cover; margin-bottom: 10px;">
-  <div id="nav-container"></div>
-  <div id="cart-count">Cart: 0 items</div>
+<header class="main-header">
+  <div class="header-logo">
+    <img src="https://pics.craiyon.com/2023-10-10/59b886e58ddc4787bcff51091752b9b6.webp" alt="V Store Logo">
+  </div>
+  <nav id="main-nav" class="header-nav">
+    <ul class="header-nav-list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="cart.html">Cart</a></li>
+      <li><a href="checkout.html">Checkout</a></li>
+      <li><a href="subscription.html">Subscription</a></li>
+      <li><a href="newsletter.html">Newsletter</a></li>
+      <li><a href="login.html" id="nav-login-link">Login</a></li>
+      <li><a href="register.html" id="nav-register-link">Register</a></li>
+      <li><span id="nav-user-info" class="nav-user-info"></span></li>
+    </ul>
+  </nav>
+  <div id="cart-count" class="header-cart">Cart: 0 items</div>
 </header>
 
 <main class="container">

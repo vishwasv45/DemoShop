@@ -73,16 +73,16 @@
 
   // Sample product list (replace with real data)
   window.PRODUCTS = [
-  { id: 'p1', name: 'Classic Tee', price: 19.99, category: 'Apparel', sku: 'CT-001', image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80' },
-  { id: 'p2', name: 'Runner Sneakers', price: 79.99, category: 'Footwear', sku: 'RS-002', image: 'https://tse4.mm.bing.net/th/id/OIP.5LkGcAYYGOthsZ3qynUvBAHaHa?w=626&h=626&rs=1&pid=ImgDetMain&o=7&rm=3  ' },
-  { id: 'p3', name: 'Water Bottle', price: 12.50, category: 'Accessories', sku: 'WB-003', image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80' },
-  { id: 'p4', name: 'Leather Wallet', price: 29.99, category: 'Accessories', sku: 'LW-004', image: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80' },
-  { id: 'p5', name: 'Yoga Pants', price: 34.99, category: 'Apparel', sku: 'YP-005', image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80' },
-  { id: 'p6', name: 'Sports Watch', price: 149.99, category: 'Accessories', sku: 'SW-006', image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80' },
-  { id: 'p7', name: 'Denim Jacket', price: 59.99, category: 'Apparel', sku: 'DJ-007', image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80' },
-  { id: 'p8', name: 'Flip Flops', price: 15.99, category: 'Footwear', sku: 'FF-008', image: 'https://static.vecteezy.com/system/resources/previews/030/547/265/large_2x/ai-generated-sport-shoes-photo.jpg' },
-  { id: 'p9', name: 'Baseball Cap', price: 18.00, category: 'Accessories', sku: 'BC-009', image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80' },
-  { id: 'p10', name: 'Running Shorts', price: 22.50, category: 'Apparel', sku: 'RS-010', image: 'https://static.vecteezy.com/system/resources/previews/042/349/170/large_2x/ai-generated-3d-rendering-of-a-man-shorts-on-transparent-background-ai-generated-free-png.png' }
+  { id: 'p1', name: 'Classic Tee', price: 19.99, category: 'Apparel', sku: 'CT001', image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80' },
+  { id: 'p2', name: 'Runner Sneakers', price: 79.99, category: 'Footwear', sku: 'RS002', image: 'https://tse4.mm.bing.net/th/id/OIP.5LkGcAYYGOthsZ3qynUvBAHaHa?w=626&h=626&rs=1&pid=ImgDetMain&o=7&rm=3  ' },
+  { id: 'p3', name: 'Water Bottle', price: 12.50, category: 'Accessories', sku: 'WB003', image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80' },
+  { id: 'p4', name: 'Leather Wallet', price: 29.99, category: 'Accessories', sku: 'LW004', image: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80' },
+  { id: 'p5', name: 'Yoga Pants', price: 34.99, category: 'Apparel', sku: 'YP005', image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80' },
+  { id: 'p6', name: 'Sports Watch', price: 149.99, category: 'Accessories', sku: 'SW006', image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80' },
+  { id: 'p7', name: 'Denim Jacket', price: 59.99, category: 'Apparel', sku: 'DJ007', image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80' },
+  { id: 'p8', name: 'Flip Flops', price: 15.99, category: 'Footwear', sku: 'FF008', image: 'https://static.vecteezy.com/system/resources/previews/030/547/265/large_2x/ai-generated-sport-shoes-photo.jpg' },
+  { id: 'p9', name: 'Baseball Cap', price: 18.00, category: 'Accessories', sku: 'BC009', image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80' },
+  { id: 'p10', name: 'Running Shorts', price: 22.50, category: 'Apparel', sku: 'RS010', image: 'https://static.vecteezy.com/system/resources/previews/042/349/170/large_2x/ai-generated-3d-rendering-of-a-man-shorts-on-transparent-background-ai-generated-free-png.png' }
   ];
 
   window.findProduct = function(id) { return PRODUCTS.find(function(p){ return p.id === id; }); };

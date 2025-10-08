@@ -65,6 +65,8 @@ function updateNavLoginState() {
 initPage('cart').then(function(){
   var itemsDiv = document.getElementById('cart-items');
   var cart = getCart();
+  // Push cartView event with product details
+  pushEvent('cartView', enrichPayloadForEvent('Cart View', { products: cart }));
   if(cart.length===0) itemsDiv.textContent='Cart is empty';
   cart.forEach(function(i){
     var el = document.createElement('div');

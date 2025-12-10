@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Women's Accessories</title>
+    <link rel="stylesheet" href="../../style.css">
+    <script src="https://assets.adobedtm.com/01296dd00565/a7688a1e27f2/launch-4ef5df62b439-development.min.js" async></script>
+</head>
+<body>
+    <header>
+        <h1>Women - Accessories</h1>
+        <div id="nav-container"></div>
+    </header>
+    <main class="container">
+        <div id="product-list" class="grid"></div>
+    </main>
+    <script src="../../main.js"></script>
+    <script>
+    injectNav('#nav-container').then(function(){ updateNavLoginState(); });
+    initPage('products/women/accessories').then(function(){
+        var productsDiv = document.getElementById('product-list');
+        PRODUCTS.filter(function(p){ return (p.gender || '').toLowerCase() === 'women' && (p.category || '').toLowerCase() === 'accessories'; }).forEach(function(p){
+            var card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = '<div class="card-img-wrap"><img class="card-img" src="'+escapeHtml(p.image)+'" alt="'+escapeHtml(p.name)+'"></div>'+
+                             '<h3>'+escapeHtml(p.name)+'</h3>'+
+                             '<p class="muted">'+escapeHtml(p.category)+'</p>'+
+                             '<p class="price">$'+p.price.toFixed(2)+'</p>'+
+                             '<div class="card-actions">'+
+                                '<button onclick="addToCart(\''+p.id+'\',1)">Add to Cart</button>'+
+                                '<button onclick="productView(\''+p.id+'\')">Quick View</button>'+
+                             '</div>';
+            productsDiv.appendChild(card);
+        });
+    });
+    </script>
+</body>
+</html>

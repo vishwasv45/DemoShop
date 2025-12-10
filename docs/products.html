@@ -14,17 +14,17 @@
     </header>
     <main>
         <div class="subcategories" style="margin:16px 0;text-align:center;">
-            <button class="subcat-link active" onclick="filterByGender('All')">All Products</button>
-            <button class="subcat-link" onclick="filterByGender('Men')">Men</button>
-            <button class="subcat-link" onclick="filterByGender('Women')">Women</button>
-            <button class="subcat-link" onclick="filterByCategory('Accessories')">Accessories</button>
+            <a href="products.html" class="subcat-link active">All Products</a>
+            <a href="products/men/apparel.html" class="subcat-link">Men</a>
+            <a href="products/women/apparel.html" class="subcat-link">Women</a>
+            <a href="products/accessories/all.html" class="subcat-link">Accessories</a>
         </div>
         
         <div id="subcategories-container" style="margin:12px 0;text-align:center;display:none;">
             <span style="font-weight:600;margin-right:16px;">Subcategories:</span>
-            <button class="subcat-link-secondary" onclick="filterByGenderAndCategory('Men', 'Apparel')">Apparel</button>
-            <button class="subcat-link-secondary" onclick="filterByGenderAndCategory('Men', 'Footwear')">Footwear</button>
-            <button class="subcat-link-secondary" onclick="clearSubcategoryFilter()">All in Category</button>
+            <a href="products/men/apparel.html" class="subcat-link-secondary">Apparel</a>
+            <a href="products/men/footwear.html" class="subcat-link-secondary">Footwear</a>
+            <a href="products/men/accessories.html" class="subcat-link-secondary">Accessories</a>
         </div>
         
         <div id="product-list" class="grid">
@@ -60,39 +60,13 @@ function updateNavLoginState() {
         navUserInfo.textContent = '';
     }
 }
-// Render product list dynamically with live quantity
+// Render all products on main products page
 var currentFilter = { type: 'all', value: null, subcategory: null };
 
 function renderProducts(filter) {
     var productsDiv = document.getElementById('product-list');
     productsDiv.innerHTML = '';
     var filtered = PRODUCTS;
-    
-    if (filter.type === 'gender' && filter.value) {
-        filtered = PRODUCTS.filter(function(p){ return (p.gender || '').toLowerCase() === filter.value.toLowerCase(); });
-        // Show subcategories for gender filters
-        showSubcategories(filter.value);
-    } else if (filter.type === 'category' && filter.value) {
-        filtered = PRODUCTS.filter(function(p){ return (p.category || '').toLowerCase() === filter.value.toLowerCase(); });
-        // Hide subcategories for category filters
-        document.getElementById('subcategories-container').style.display = 'none';
-    } else {
-        // Show/hide based on current filter
-        if (currentFilter.type === 'gender' && currentFilter.value) {
-            showSubcategories(currentFilter.value);
-        } else {
-            document.getElementById('subcategories-container').style.display = 'none';
-        }
-    }
-    
-    // Apply subcategory filter if set
-    if (filter.subcategory) {
-        filtered = filtered.filter(function(p){ return (p.category || '').toLowerCase() === filter.subcategory.toLowerCase(); });
-    }
-    
-    // Update active button styling
-    var buttons = document.querySelectorAll('.subcat-link');
-    buttons.forEach(function(btn){ btn.classList.remove('active'); });
     
     filtered.forEach(function(p){
         var card = document.createElement('div');
@@ -125,52 +99,18 @@ function renderProducts(filter) {
     });
 }
 
-function showSubcategories(gender) {
-    var container = document.getElementById('subcategories-container');
-    var innerHtml = '<span style="font-weight:600;margin-right:16px;">Subcategories:</span>';
-    
-    if (gender.toLowerCase() === 'men' || gender.toLowerCase() === 'women') {
-        innerHtml += '<button class="subcat-link-secondary" onclick="filterByGenderAndCategory(\''+gender+'\', \'Apparel\')">Apparel</button>';
-        innerHtml += '<button class="subcat-link-secondary" onclick="filterByGenderAndCategory(\''+gender+'\', \'Footwear\')">Footwear</button>';
-        innerHtml += '<button class="subcat-link-secondary" onclick="filterByGenderAndCategory(\''+gender+'\', \'Accessories\')">Accessories</button>';
-        innerHtml += '<button class="subcat-link-secondary" onclick="clearSubcategoryFilter(\''+gender+'\')">All in Category</button>';
-    } else if (gender.toLowerCase() === 'accessories') {
-        innerHtml += '<button class="subcat-link-secondary" onclick="filterByCategory(\'Accessories\')">All Accessories</button>';
-    }
-    
-    container.innerHTML = innerHtml;
-    container.style.display = 'block';
-}
-
-function filterByGender(gender) {
-    if (gender === 'All') {
-        currentFilter = { type: 'all', value: null, subcategory: null };
-    } else {
-        currentFilter = { type: 'gender', value: gender, subcategory: null };
-    }
-    renderProducts(currentFilter);
-    event.target.classList.add('active');
-}
-
-function filterByCategory(category) {
-    currentFilter = { type: 'category', value: category, subcategory: null };
-    renderProducts(currentFilter);
-    event.target.classList.add('active');
-}
-
-function filterByGenderAndCategory(gender, category) {
-    currentFilter = { type: 'gender', value: gender, subcategory: category };
-    renderProducts(currentFilter);
-}
-
-function clearSubcategoryFilter(gender) {
-    currentFilter = { type: 'gender', value: gender, subcategory: null };
-    renderProducts(currentFilter);
-}
-
 initPage('products').then(function(){
     renderProducts(currentFilter);
-    document.querySelector('.subcat-link').classList.add('active');
+    
+    // Mark the current page as active
+    var currentPage = window.location.pathname.split('/').pop() || 'products.html';
+    var links = document.querySelectorAll('.subcat-link');
+    links.forEach(function(link){
+        link.classList.remove('active');
+        if (link.getAttribute('href') === currentPage) {
+            link.classList.add('active');
+        }
+    });
 });
 </script>
 </body>

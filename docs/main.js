@@ -73,16 +73,21 @@
 
   // Sample product list (replace with real data)
   window.PRODUCTS = [
-  { id: 'p1', name: 'Classic Tee', price: 19.99, category: 'Apparel', sku: 'CT001', image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80' },
-  { id: 'p2', name: 'Runner Sneakers', price: 79.99, category: 'Footwear', sku: 'RS002', image: 'https://tse4.mm.bing.net/th/id/OIP.5LkGcAYYGOthsZ3qynUvBAHaHa?w=626&h=626&rs=1&pid=ImgDetMain&o=7&rm=3  ' },
-  { id: 'p3', name: 'Water Bottle', price: 12.50, category: 'Accessories', sku: 'WB003', image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80' },
-  { id: 'p4', name: 'Leather Wallet', price: 29.99, category: 'Accessories', sku: 'LW004', image: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80' },
-  { id: 'p5', name: 'Yoga Pants', price: 34.99, category: 'Apparel', sku: 'YP005', image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80' },
-  { id: 'p6', name: 'Sports Watch', price: 149.99, category: 'Accessories', sku: 'SW006', image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80' },
-  { id: 'p7', name: 'Denim Jacket', price: 59.99, category: 'Apparel', sku: 'DJ007', image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80' },
-  { id: 'p8', name: 'Flip Flops', price: 15.99, category: 'Footwear', sku: 'FF008', image: 'https://static.vecteezy.com/system/resources/previews/030/547/265/large_2x/ai-generated-sport-shoes-photo.jpg' },
-  { id: 'p9', name: 'Baseball Cap', price: 18.00, category: 'Accessories', sku: 'BC009', image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80' },
-  { id: 'p10', name: 'Running Shorts', price: 22.50, category: 'Apparel', sku: 'RS010', image: 'https://static.vecteezy.com/system/resources/previews/042/349/170/large_2x/ai-generated-3d-rendering-of-a-man-shorts-on-transparent-background-ai-generated-free-png.png' }
+  { id: 'p1', name: 'Classic Tee', price: 19.99, category: 'Apparel', gender: 'Men', sku: 'CT001', image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80' },
+  { id: 'p2', name: 'Runner Sneakers', price: 79.99, category: 'Footwear', gender: 'Men', sku: 'RS002', image: 'https://tse4.mm.bing.net/th/id/OIP.5LkGcAYYGOthsZ3qynUvBAHaHa?w=626&h=626&rs=1&pid=ImgDetMain&o=7&rm=3  ' },
+  { id: 'p3', name: 'Water Bottle', price: 12.50, category: 'Accessories', gender: 'Unisex', sku: 'WB003', image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80' },
+  { id: 'p4', name: 'Leather Wallet', price: 29.99, category: 'Accessories', gender: 'Men', sku: 'LW004', image: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80' },
+  { id: 'p5', name: 'Yoga Pants', price: 34.99, category: 'Apparel', gender: 'Women', sku: 'YP005', image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80' },
+  { id: 'p6', name: 'Sports Watch', price: 149.99, category: 'Accessories', gender: 'Unisex', sku: 'SW006', image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80' },
+  { id: 'p7', name: 'Denim Jacket', price: 59.99, category: 'Apparel', gender: 'Men', sku: 'DJ007', image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80' },
+  { id: 'p8', name: 'Flip Flops', price: 15.99, category: 'Footwear', gender: 'Women', sku: 'FF008', image: 'https://static.vecteezy.com/system/resources/previews/030/547/265/large_2x/ai-generated-sport-shoes-photo.jpg' },
+  { id: 'p9', name: 'Baseball Cap', price: 18.00, category: 'Accessories', gender: 'Unisex', sku: 'BC009', image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80' },
+  { id: 'p10', name: 'Running Shorts', price: 22.50, category: 'Apparel', gender: 'Men', sku: 'RS010', image: 'https://static.vecteezy.com/system/resources/previews/042/349/170/large_2x/ai-generated-3d-rendering-of-a-man-shorts-on-transparent-background-ai-generated-free-png.png' },
+  { id: 'p11', name: 'Sunglasses', price: 89.99, category: 'Accessories', gender: 'Women', sku: 'SG011', image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=400&q=80' },
+  { id: 'p12', name: 'Cotton Hoodie', price: 54.99, category: 'Apparel', gender: 'Women', sku: 'CH012', image: 'https://images.unsplash.com/photo-1556821552-7f41c5d440db?auto=format&fit=crop&w=400&q=80' },
+  { id: 'p13', name: 'Gym Bag', price: 45.00, category: 'Accessories', gender: 'Unisex', sku: 'GB013', image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=400&q=80' },
+  { id: 'p14', name: 'Winter Jacket', price: 129.99, category: 'Apparel', gender: 'Women', sku: 'WJ014', image: 'https://images.unsplash.com/photo-1539533057592-4d2255fd498d?auto=format&fit=crop&w=400&q=80' },
+  { id: 'p15', name: 'Phone Case', price: 24.99, category: 'Accessories', gender: 'Unisex', sku: 'PC015', image: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=400&q=80' }
   ];
 
   window.findProduct = function(id) { return PRODUCTS.find(function(p){ return p.id === id; }); };

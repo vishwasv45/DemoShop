@@ -13,6 +13,20 @@
         <div id="nav-container"></div>
     </header>
     <main>
+        <div class="subcategories" style="margin:16px 0;text-align:center;">
+            <button class="subcat-link active" onclick="filterByGender('All')">All Products</button>
+            <button class="subcat-link" onclick="filterByGender('Men')">Men</button>
+            <button class="subcat-link" onclick="filterByGender('Women')">Women</button>
+            <button class="subcat-link" onclick="filterByCategory('Accessories')">Accessories</button>
+        </div>
+        
+        <div id="subcategories-container" style="margin:12px 0;text-align:center;display:none;">
+            <span style="font-weight:600;margin-right:16px;">Subcategories:</span>
+            <button class="subcat-link-secondary" onclick="filterByGenderAndCategory('Men', 'Apparel')">Apparel</button>
+            <button class="subcat-link-secondary" onclick="filterByGenderAndCategory('Men', 'Footwear')">Footwear</button>
+            <button class="subcat-link-secondary" onclick="clearSubcategoryFilter()">All in Category</button>
+        </div>
+        
         <div id="product-list" class="grid">
             <!-- Product items will be dynamically loaded here -->
         </div>
@@ -47,18 +61,50 @@ function updateNavLoginState() {
     }
 }
 // Render product list dynamically with live quantity
-initPage('products').then(function(){
+var currentFilter = { type: 'all', value: null, subcategory: null };
+
+function renderProducts(filter) {
     var productsDiv = document.getElementById('product-list');
-    PRODUCTS.forEach(function(p){
+    productsDiv.innerHTML = '';
+    var filtered = PRODUCTS;
+    
+    if (filter.type === 'gender' && filter.value) {
+        filtered = PRODUCTS.filter(function(p){ return (p.gender || '').toLowerCase() === filter.value.toLowerCase(); });
+        // Show subcategories for gender filters
+        showSubcategories(filter.value);
+    } else if (filter.type === 'category' && filter.value) {
+        filtered = PRODUCTS.filter(function(p){ return (p.category || '').toLowerCase() === filter.value.toLowerCase(); });
+        // Hide subcategories for category filters
+        document.getElementById('subcategories-container').style.display = 'none';
+    } else {
+        // Show/hide based on current filter
+        if (currentFilter.type === 'gender' && currentFilter.value) {
+            showSubcategories(currentFilter.value);
+        } else {
+            document.getElementById('subcategories-container').style.display = 'none';
+        }
+    }
+    
+    // Apply subcategory filter if set
+    if (filter.subcategory) {
+        filtered = filtered.filter(function(p){ return (p.category || '').toLowerCase() === filter.subcategory.toLowerCase(); });
+    }
+    
+    // Update active button styling
+    var buttons = document.querySelectorAll('.subcat-link');
+    buttons.forEach(function(btn){ btn.classList.remove('active'); });
+    
+    filtered.forEach(function(p){
         var card = document.createElement('div');
         card.className = 'card';
         var cart = getCart();
         var existing = cart.find(function(i){ return i.id === p.id; });
         var qty = existing ? existing.qty : 0;
+        var genderDisplay = p.gender ? p.gender : 'Unisex';
         card.innerHTML =
             '<div class="card-img-wrap"><img class="card-img" src="'+escapeHtml(p.image)+'" alt="'+escapeHtml(p.name)+'"></div>'+
             '<h3>'+escapeHtml(p.name)+'</h3>'+
-            '<p class="muted">'+escapeHtml(p.category)+'</p>'+
+            '<p class="muted"><strong>'+escapeHtml(p.category)+'</strong> - '+escapeHtml(genderDisplay)+'</p>'+
             '<p class="price">$'+p.price.toFixed(2)+'</p>'+
             '<div class="card-actions">'+
                 '<button id="add-'+p.id+'">Add to Cart</button>'+
@@ -77,6 +123,54 @@ initPage('products').then(function(){
             productView(p.id);
         };
     });
+}
+
+function showSubcategories(gender) {
+    var container = document.getElementById('subcategories-container');
+    var innerHtml = '<span style="font-weight:600;margin-right:16px;">Subcategories:</span>';
+    
+    if (gender.toLowerCase() === 'men' || gender.toLowerCase() === 'women') {
+        innerHtml += '<button class="subcat-link-secondary" onclick="filterByGenderAndCategory(\''+gender+'\', \'Apparel\')">Apparel</button>';
+        innerHtml += '<button class="subcat-link-secondary" onclick="filterByGenderAndCategory(\''+gender+'\', \'Footwear\')">Footwear</button>';
+        innerHtml += '<button class="subcat-link-secondary" onclick="filterByGenderAndCategory(\''+gender+'\', \'Accessories\')">Accessories</button>';
+        innerHtml += '<button class="subcat-link-secondary" onclick="clearSubcategoryFilter(\''+gender+'\')">All in Category</button>';
+    } else if (gender.toLowerCase() === 'accessories') {
+        innerHtml += '<button class="subcat-link-secondary" onclick="filterByCategory(\'Accessories\')">All Accessories</button>';
+    }
+    
+    container.innerHTML = innerHtml;
+    container.style.display = 'block';
+}
+
+function filterByGender(gender) {
+    if (gender === 'All') {
+        currentFilter = { type: 'all', value: null, subcategory: null };
+    } else {
+        currentFilter = { type: 'gender', value: gender, subcategory: null };
+    }
+    renderProducts(currentFilter);
+    event.target.classList.add('active');
+}
+
+function filterByCategory(category) {
+    currentFilter = { type: 'category', value: category, subcategory: null };
+    renderProducts(currentFilter);
+    event.target.classList.add('active');
+}
+
+function filterByGenderAndCategory(gender, category) {
+    currentFilter = { type: 'gender', value: gender, subcategory: category };
+    renderProducts(currentFilter);
+}
+
+function clearSubcategoryFilter(gender) {
+    currentFilter = { type: 'gender', value: gender, subcategory: null };
+    renderProducts(currentFilter);
+}
+
+initPage('products').then(function(){
+    renderProducts(currentFilter);
+    document.querySelector('.subcat-link').classList.add('active');
 });
 </script>
 </body>
